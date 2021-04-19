@@ -36,6 +36,12 @@ def getHomeTeam(df, gameID):
     else:
         return teams[1]
 
+#colname is string, col num is the index of the column 
+def normalizeData(df, colname, colnum):
+    a = df[colname]
+    n = df.columns[colnum]
+    df[n] = stats.zscore(a)
+    #print(df)
 
 teamGamesCSV = pd.read_csv('TeamGames.csv')
 totalScoresCSV = pd.read_csv('TotalScores.csv')
@@ -49,6 +55,10 @@ print(getTeamId(teamGamesCSV, 'Atlanta Hawks'))
 print(getGameTeams(teamGamesCSV, 22000069))
 print(getHomeTeam(teamGamesCSV, 22000069))
 print(getGameWinner(teamGamesCSV, 22000069))
+
+#z-score plus/minus
+normalizeData(teamGamesCSV, 'PLUS_MINUS', 10)
+normalizeData(teamGamesCSV, 'PLUS_MINUS_RANK', 11)
 
 
 """
