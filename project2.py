@@ -31,29 +31,30 @@ def getHomeTeam(df, gameID):
     index = df.loc[df['GAME_ID'] == gameID].index[0]
     matchup = df['MATCHUP'].loc[index]
     teams = getGameTeams(df, gameID)
-
-    if '@' in matchup and df['TEAM_NAME'].loc[index] != teams[0]:
+    if '@' in matchup and df['TEAM_NAME'].loc[index] == teams[0]:
         return teams[0]
     else:
         return teams[1]
 
-data = pd.read_csv('TeamGames.csv')
-wl = data['WL']
+
+teamGamesCSV = pd.read_csv('TeamGames.csv')
+
+wl = teamGamesCSV['WL']
 n = wl.shape[0]
 labels = np.zeros(n)
 labels[wl == 'W'] = 1  # ground_truth
 
-print(getTeamId(data, 'Atlanta Hawks'))
-print(getGameTeams(data, 21401217))
-print(getHomeTeam(data, 21401217))
-print(getGameWinner(data, 21401217))
+print(getTeamId(teamGamesCSV, 'Atlanta Hawks'))
+print(getGameTeams(teamGamesCSV, 22000069))
+print(getHomeTeam(teamGamesCSV, 22000069))
+print(getGameWinner(teamGamesCSV, 22000069))
 
 
 """
 cv = KFold(n_splits=10, random_state=225, shuffle=True)
 
-for train_index, test_index in cv.split(data):
-    X_train, X_test = data.iloc[train_index, :], data.iloc[test_index, :]
+for train_index, test_index in cv.split(teamGamesCSV):
+    X_train, X_test = teamGamesCSV.iloc[train_index, :], teamGamesCSV.iloc[test_index, :]
     y_train, y_test = labels[train_index], labels[test_index]
 
 """
