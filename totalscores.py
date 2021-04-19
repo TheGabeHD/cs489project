@@ -4,14 +4,34 @@ import pandas as pd
 
 # Read data
 data = pd.read_csv('TeamGamesSorted.csv')
-gameScore = pd.DataFrame(columns=['GAME_ID', 'H_TEAM', 'A_TEAM', 'H_POINTS', 'A_POINTS', 'TOTAL', 'M_OF_VIC'])
+gameScore = pd.DataFrame(columns=['GAME_ID', 'H_TEAM', 'A_TEAM', 'H_POINTS', 'A_POINTS', 'TOTAL', 'M_OF_VIC', 'WINNER'])
 
+# Grab all the data on a per-game basis
 for index, row in data.iterrows():
     game_id = row['GAME_ID']
-    print(game_id)
+    matchup = row['MATCHUP']
+    pts = row['PTS']
+    team = row['TEAM_NAME']
+        
     if (index % 2 == 0):
-        gameScore.loc[len(gameScore.index)] = [game_id, None, None, 0, 0, 0, 0]
+        gameScore.loc[len(gameScore.index)] = [game_id, None, None, 0, 0, 0, 0, None]
+    
+    if '@' in matchup:
+        gameScore.loc[gameScore.GAME_ID == game_id, 'H_POINTS'] = pts
+        gameScore.loc[gameScore.GAME_ID == game_id, 'H_TEAM'] = team
+        gameScore.loc[gameScore.GAME_ID == game_id, 'TOTAL'] += pts
+    else:
+        gameScore.loc[gameScore.GAME_ID == game_id, 'A_POINTS'] = pts
+        gameScore.loc[gameScore.GAME_ID == game_id, 'A_TEAM'] = team
+        gameScore.loc[gameScore.GAME_ID == game_id, 'TOTAL'] += pts
 
+print("Done Main For Loop")
+            
+# Calculate margin of victory
+for index, row in gameScore.iterrows():
+    game_id = row['GAME_ID']
+    gameScore.loc[gameScore.GAME_ID == game_id, 'M_OF_VIC'] = abs(row['H_POINTS'] - row['A_POINTS'])
+    gameScore.loc[gameScore.GAME_ID == game_id, 'WINNER'] = row['H_TEAM'] if (row['H_POINTS'] > row['A_POINTS']) else row['A_TEAM']
 
 gameScore.to_csv('ScoresData.csv')
 
