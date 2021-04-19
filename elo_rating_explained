@@ -1,0 +1,20 @@
+Elo Ratings -> Final Score + Where it was played (home/away)
+- Gain points for winning, lose points for losing (upsets = higher margins)
+- Zero sum system (same amount of points added to winning team and subtracted from losing team)
+- Ratings go off of a game by game basis
+
+Elo K-Factor: How quickly the rating reacts to new results 
+- Essentially we want to react to new results but not to overreact (minimize autocorrelation)
+- If K too high -> ratings jump around a bunch
+- If K too low -> Elo takes too long to recognize change
+- Optimal K is 20 (Give a lot of weight to recent team performance)
+
+Home Court Advantage = 100 Elo points (equivalent to 3.5 NBA points)
+
+Margin of Victory: You gain or lose more Elo points dependent on the margin of victory
+- Formula accounts for diminishing returns (starting to win by less matters more than the opposite)
+
+Year to Year Carry Over: Team retains 3/4 of their rating into the next year
+- This is due to the fact that NBA teams tend to be more consistent year to year 
+
+Inaugural Season: Start with 1300 score
