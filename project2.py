@@ -38,6 +38,7 @@ def getHomeTeam(df, gameID):
 
 
 teamGamesCSV = pd.read_csv('TeamGames.csv')
+totalScoresCSV = pd.read_csv('TotalScores.csv')
 
 wl = teamGamesCSV['WL']
 n = wl.shape[0]
