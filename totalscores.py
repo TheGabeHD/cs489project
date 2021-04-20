@@ -32,7 +32,16 @@ for index, row in gameScore.iterrows():
     game_id = row['GAME_ID']
     gameScore.loc[gameScore.GAME_ID == game_id, 'M_OF_VIC'] = abs(row['H_POINTS'] - row['A_POINTS'])
     gameScore.loc[gameScore.GAME_ID == game_id, 'WINNER'] = row['H_TEAM'] if (row['H_POINTS'] > row['A_POINTS']) else row['A_TEAM']
-
+    
+for index, row in gameScore.iterrows():
+    game_id = row['GAME_ID']
+    if (row['H_TEAM'] == 'LA Clippers'):
+         gameScore.loc[gameScore.GAME_ID == game_id, 'H_TEAM'] = 'Los Angeles Clippers'
+    if (row['A_TEAM'] == 'LA Clippers'):
+         gameScore.loc[gameScore.GAME_ID == game_id, 'A_TEAM'] = 'Los Angeles Clippers'
+    if (row['WINNER'] == 'LA Clippers'):
+        gameScore.loc[gameScore.GAME_ID == game_id, 'WINNER'] = 'Los Angeles Clippers'
+    
 gameScore.to_csv('ScoresData.csv')
 
 '''

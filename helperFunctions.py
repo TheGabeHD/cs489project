@@ -8,12 +8,14 @@ class HelperFunctions:
     _totalScores = pd.DataFrame()
 
     def __init__(self):
-        _teamGames = pd.read_csv('TeamGames.csv')
-        _totalScores = pd.read_csv('TotalScores.csv')
+        self._teamGames = pd.read_csv('TeamGamesSorted.csv')
+        self._totalScores = pd.read_csv('TotalScores.csv')
 
     """Grabs the Team ID of the given team"""
 
     def getTeamId(self, team_name):
+        print(team_name)
+        print(type(team_name))
         df = self._teamGames
         team_id_index = df.loc[df['TEAM_NAME'] == team_name].index[0]
         return df['TEAM_ID'].loc[team_id_index]
@@ -35,6 +37,13 @@ class HelperFunctions:
 
     """Return the Team Name (string) of the winner of game id"""
 
+    def getYear(self, game_id):
+        df = self._teamGames
+        year_index = df.loc[df['GAME_ID'] == game_id].index[0]
+        return df['SEASON_YEAR'].loc[year_index]
+    
+    """Return the Year (string) that the game was played in """
+    
     def getGameWinner(self, game_id):
         df = self._teamGames
         index = df.loc[df['GAME_ID'] == game_id].index[0]
@@ -46,15 +55,14 @@ class HelperFunctions:
 
     """Return the Team (string) that was the Home team in game id"""
 
-    def getHomeTeam(self, game_id):
+    def isHomeTeam(self, game_id, teamName):
         df = self._teamGames
         index = df.loc[df['GAME_ID'] == game_id].index[0]
         matchup = df['MATCHUP'].loc[index]
-        teams = self.getGameTeams(game_id)
-        if '@' in matchup and df['TEAM_NAME'].loc[index] == teams[0]:
-            return teams[0]
+        if '@' in matchup and df['TEAM_NAME'].loc[index] == teamName:
+            return True
         else:
-            return teams[1]
+            return False
 
     """col_name is string, col num is the index of the column"""
     def normalizeData(self, col_name, col_num):
