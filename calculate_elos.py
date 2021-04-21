@@ -33,17 +33,27 @@ def eloYearUpdate(elo_dict):
 # 'GAME_ID', 'H_TEAM', 'A_TEAM', 'H_POINTS', 'A_POINTS', 'TOTAL', 'M_OF_VIC', 'WINNER'
 gameDataCSV = pd.read_csv('ScoresData.csv')
 additionalgameDataCSV = pd.read_csv('TeamGamesSorted.csv')
+teamBaseElos = pd.read_csv('EosELO2013.csv')
 helperObj = hf.HelperFunctions()
 
 def evalTeamName(game_id, location):
     return str(gameDataCSV.loc[gameDataCSV.GAME_ID == game_id, location].values[0])
+
+
 
 # Add 2 New Columns for ELO's
 gameDataCSV['H_TEAM_ELO'] = np.zeros(gameDataCSV.shape[0])
 gameDataCSV['A_TEAM_ELO'] = np.zeros(gameDataCSV.shape[0])
 
 all_NBA_teams = set(gameDataCSV['H_TEAM'])
-elo_dict = dict(zip(list(all_NBA_teams), [1500] * len(all_NBA_teams))) # Change 1500 to the 2013-14 Year Elo's
+
+# Grabbing the Elos for each team at the end of 2013-14 season (before we start our data)
+eloArray = []
+for team in list(all_NBA_teams):
+    id = int(helperObj.getTeamId(team))
+    eloArray += [float(teamBaseElos.loc[teamBaseElos['TEAM_ID'] == id, 'EOS_ELO'].values[0])]
+
+elo_dict = dict(zip(list(all_NBA_teams),  eloArray)) # Change 1500 to the 2013-14 Year Elo's
 
 currentYear = ""
 for index, row in gameDataCSV.iterrows():    
