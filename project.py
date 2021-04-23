@@ -27,5 +27,10 @@ for team in teams:
         print('Done', team['full_name'], ':', date)
 
 # Keep relevant columns and save
-teamGamesRel = teamGames[['SEASON_YEAR','GAME_ID','GAME_DATE','TEAM_ID','TEAM_NAME','MATCHUP','WL','W_RANK','L_RANK','W_PCT_RANK','PLUS_MINUS','PLUS_MINUS_RANK','PTS_RANK']]
-teamGamesRel.to_csv('TeamGames.csv')
+teamGamesRel = teamGames[['SEASON_YEAR','GAME_ID','GAME_DATE','TEAM_ID','TEAM_NAME','MATCHUP','WL','PLUS_MINUS','FG3_PCT','FT_PCT','REB','AST','STL','BLK']]
+
+# Sort by game id
+data = teamGamesRel.sort_values(by=['GAME_ID'])
+
+# Print out new CSV
+data.to_csv('TeamGamesSorted.csv')
