@@ -57,7 +57,7 @@ svmRBF_table.field_names = ["Experiment #", "Accuracy"]
 # Preprocessing ------------------------------------------------------------------------------------------
 
 # Read in the Dataset
-gameDataCSV = pd.read_csv('ScoresData1.csv', index_col = 0)
+gameDataCSV = pd.read_csv('FinalDataset.csv', index_col = 0)
 
 # Grab the labels (Game Winner) 
 # Need to convert the winner data to numerical data:

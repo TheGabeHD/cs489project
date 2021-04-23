@@ -31,14 +31,13 @@ def eloYearUpdate(elo_dict):
     
 # Read CSV
 # 'GAME_ID', 'H_TEAM', 'A_TEAM', 'H_POINTS', 'A_POINTS', 'TOTAL', 'M_OF_VIC', 'WINNER'
-gameDataCSV = pd.read_csv('ScoresData.csv')
+gameDataCSV = pd.read_csv('ScoresData1.csv')
 additionalgameDataCSV = pd.read_csv('TeamGamesSorted.csv')
 teamBaseElos = pd.read_csv('EosELO2013.csv')
 helperObj = hf.HelperFunctions()
 
 def evalTeamName(game_id, location):
     return str(gameDataCSV.loc[gameDataCSV.GAME_ID == game_id, location].values[0])
-
 
 
 # Add 2 New Columns for ELO's
@@ -87,6 +86,9 @@ for index, row in gameDataCSV.iterrows():
     else:
         gameDataCSV.loc[gameDataCSV.GAME_ID == game_id, 'A_TEAM_ELO'] = elo_dict[win_Team]
         gameDataCSV.loc[gameDataCSV.GAME_ID == game_id, 'H_TEAM_ELO'] = elo_dict[lose_Team]
+     
+# Print out New CSV        
+gameDataCSV.to_csv('FinalDataset.csv')
         
     
     
