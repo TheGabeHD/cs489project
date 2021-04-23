@@ -6,6 +6,7 @@ from prettytable import PrettyTable
 from sklearn.model_selection import KFold
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import StandardScaler
 from sklearn import svm
 
 # SVM Functions
@@ -69,7 +70,7 @@ for index, row in gameDataCSV.iterrows():
         ground_Truth[index] = True
 
 # Drop non-Feature columns
-columns = [0, 1, 2, 3, 4, 5, 6, 7]
+columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 gameDataCSV.drop(gameDataCSV.columns[columns], axis=1, inplace=True)
 
 # Creating Test/Training Data & Training the Model ---------------------------------------------------------
@@ -86,6 +87,12 @@ for train_index, test_index in cv.split(gameDataCSV):
     X_train, X_test = gameDataCSV.iloc[train_index, :], gameDataCSV.iloc[test_index, :]
     y_train, y_test = ground_Truth[train_index], ground_Truth[test_index]
 
+    # Normalize the Data
+    # Must use the parameters from the training set to normalize the test set
+    sc = StandardScaler()
+    X_train = sc.fit_transform(X_train)
+    X_test = sc.transform(X_test)
+    
     # -------------------------------------------------------------------------------
     # Create Logistic Regression Model
     logistic_model = LogisticRegression(random_state=1)
