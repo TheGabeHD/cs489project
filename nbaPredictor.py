@@ -57,7 +57,7 @@ svmRBF_table.field_names = ["Experiment #", "Accuracy"]
 # Preprocessing ------------------------------------------------------------------------------------------
 
 # Read in the Dataset
-gameDataCSV = pd.read_csv('ScoresData.csv', index_col = 0)
+gameDataCSV = pd.read_csv('ScoresData1.csv', index_col = 0)
 
 # Grab the labels (Game Winner) 
 # Need to convert the winner data to numerical data:
@@ -98,6 +98,7 @@ for train_index, test_index in cv.split(gameDataCSV):
     linear_table.add_row([experiment, helperObj.ReturnPercent(linearReg_accuracy)])
     l_avg_accuracy += linearReg_accuracy
     
+    '''
     # -------------------------------------------------------------------------------
     # Linear Kernel Calculation
     linear_y_predictions = Linear_Kernel_Classification(X_train, y_train, X_test)
@@ -105,7 +106,7 @@ for train_index, test_index in cv.split(gameDataCSV):
     lin_avg_accuracy += linear_accuracy
 
     # Add Results of Experiment to Table (rounded to 2 decimal places)
-    svmLinear_table.add_row([experiment, helperObj.ReturnPercent(lin_avg_accuracy)])
+    svmLinear_table.add_row([experiment, helperObj.ReturnPercent(linear_accuracy)])
 
     # -------------------------------------------------------------------------------
     # Poly Kernel Calculation
@@ -124,10 +125,12 @@ for train_index, test_index in cv.split(gameDataCSV):
 
     # Add Results of Experiment to Table (rounded to 2 decimal places)
     svmRBF_table.add_row([experiment, helperObj.ReturnPercent(rbf_accuracy)])
+    '''
     
-    
+    # -------------------------------------------------------------------------------
     # Move to next experiment
     experiment = experiment + 1
+    
     
 # Print Out Results
 # Print Out Results w/ Linear Regression
