@@ -10,6 +10,7 @@ class HelperFunctions:
     def __init__(self):
         self._teamGames = pd.read_csv('TeamGamesSorted.csv')
         self._totalScores = pd.read_csv('TotalScores.csv')
+        self._fullData = pd.read_csv('ScoresData.csv')
 
     """Grabs the Team ID of the given team"""
 
@@ -52,6 +53,16 @@ class HelperFunctions:
             return teams[0]
         else:
             return teams[1]
+        
+    """Returns True if home team won, false otherwise"""    
+        
+    def isHomeWinner(self, game_id):
+        df = self._fullData
+        index = df.loc[df['GAME_ID'] == game_id].index[0]
+        if df['H_TEAM'].loc[index] == df['WINNER'].loc[index]:
+            return True
+        else:
+            return False
 
     """Return the Team (string) that was the Home team in game id"""
 
@@ -64,6 +75,7 @@ class HelperFunctions:
         else:
             return False
 
+
     """col_name is string, col num is the index of the column"""
     def normalizeData(self, col_name, col_num):
         df = self._teamGames
@@ -71,6 +83,12 @@ class HelperFunctions:
         n = df.columns[col_num]
         df[n] = stats.zscore(a)
         # print(df)
+
+    """Returns inputted value as a percentage"""
+        
+    def ReturnPercent(self, not_percent):
+        return '{0:.2f}%'.format(not_percent*100)
+    
 
 
 """
