@@ -91,23 +91,29 @@ class HelperFunctions:
 
     """Finds the average performance of teams for the past n games"""
 
-    def get_performance_of_n_last_games(self, game_id, team_name, game_stats_df, last_n_games):
-        prevGames = game_stats_df[game_stats_df['GAME_ID'] < game_id][
-            (game_stats_df['H_TEAM'] == team_name) | (game_stats_df['A_TEAM'] == team_name)].tail(last_n_games)
+    def get_performance_of_n_last_games(self, game_id, team_name, game_stats, last_n_games):
+        prev_games = game_stats[game_stats['GAME_ID'] < game_id][(game_stats['H_TEAM'] == team_name) |
+                                                                 (game_stats['A_TEAM'] == team_name)]
+        prev_n_games = prev_games.tail(last_n_games)
 
-        h_df = prevGames.iloc[:, 10:16]
-        h_df.insert(0, 'H_TEAM', prevGames.iloc[:, 2], True)
-        h_df.columns = [x[2:] for x in h_df.columns]
+        # Grab the stats relevant to home and away teams separately
+        home_team = prev_n_games.iloc[:, 10:16]
+        away_team = prev_n_games.iloc[:, 16:]
 
-        a_df = prevGames.iloc[:, 16:]
-        a_df.insert(0, 'A_TEAM', prevGames.iloc[:, 3], True)
-        a_df.columns = [x[2:] for x in a_df.columns]
+        # Prefix removal - "H_", "A_" ...
+        home_team.columns = [x[2:] for x in home_team.columns]
+        away_team.columns = [x[2:] for x in away_team.columns]
 
-        df = pd.concat([h_df, a_df])
-        df = df[df['TEAM'] == team_name]
-        df.drop(columns='TEAM', inplace=True)
+        # Insert the associated team names to stats, this way we are able to find the correct stats for team_name later
+        home_team.insert(0, 'TEAM', prev_n_games.iloc[:, 2], True)  # True doesn't allow duplicates, none in our data,
+        away_team.insert(0, 'TEAM', prev_n_games.iloc[:, 3], True)  # but just for good practice
 
-        return df.mean()
+        # Combine all the stats and filter out for specified team_name, then return mean of performance
+        team_last_n_games = pd.concat([home_team, away_team])
+        team_last_n_games = team_last_n_games[team_last_n_games['TEAM'] == team_name]
+        team_last_n_games.drop(columns='TEAM', inplace=True)  # remove team name for mean
+
+        return team_last_n_games.mean()
 
 
 """
