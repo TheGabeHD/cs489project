@@ -42,9 +42,9 @@ class HelperFunctions:
         df = self._teamGames
         year_index = df.loc[df['GAME_ID'] == game_id].index[0]
         return df['SEASON_YEAR'].loc[year_index]
-    
+
     """Return the Year (string) that the game was played in """
-    
+
     def getGameWinner(self, game_id):
         df = self._teamGames
         index = df.loc[df['GAME_ID'] == game_id].index[0]
@@ -53,9 +53,9 @@ class HelperFunctions:
             return teams[0]
         else:
             return teams[1]
-        
-    """Returns True if home team won, false otherwise"""    
-        
+
+    """Returns True if home team won, false otherwise"""
+
     def isHomeWinner(self, game_id):
         df = self._fullData
         index = df.loc[df['GAME_ID'] == game_id].index[0]
@@ -75,8 +75,8 @@ class HelperFunctions:
         else:
             return False
 
-
     """col_name is string, col num is the index of the column"""
+
     def normalizeData(self, col_name, col_num):
         df = self._teamGames
         a = df[col_name]
@@ -85,10 +85,29 @@ class HelperFunctions:
         # print(df)
 
     """Returns inputted value as a percentage"""
-        
+
     def ReturnPercent(self, not_percent):
-        return '{0:.2f}%'.format(not_percent*100)
-    
+        return '{0:.2f}%'.format(not_percent * 100)
+
+    """Finds the average performance of teams for the past n games"""
+
+    def get_performance_of_n_last_games(self, game_id, team_name, game_stats_df, last_n_games):
+        prevGames = game_stats_df[game_stats_df['GAME_ID'] < game_id][
+            (game_stats_df['H_TEAM'] == team_name) | (game_stats_df['A_TEAM'] == team_name)].tail(last_n_games)
+
+        h_df = prevGames.iloc[:, 10:16]
+        h_df.insert(0, 'H_TEAM', prevGames.iloc[:, 2], True)
+        h_df.columns = [x[2:] for x in h_df.columns]
+
+        a_df = prevGames.iloc[:, 16:]
+        a_df.insert(0, 'A_TEAM', prevGames.iloc[:, 3], True)
+        a_df.columns = [x[2:] for x in a_df.columns]
+
+        df = pd.concat([h_df, a_df])
+        df = df[df['TEAM'] == team_name]
+        df.drop(columns='TEAM', inplace=True)
+
+        return df.mean()
 
 
 """
