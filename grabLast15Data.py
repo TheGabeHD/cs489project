@@ -54,5 +54,5 @@ for index, row in game_stats.iterrows():
         game_stats.loc[game_stats.GAME_ID == game_id, col] = away_team_performance.loc[0, col]
 
     
-game_stats.fillna(0)
-game_stats.to_csv('AttemptDataSet.csv')
+game_stats = game_stats.fillna(0)
+
