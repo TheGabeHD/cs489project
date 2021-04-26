@@ -68,7 +68,7 @@ for index, row in gameDataCSV.iterrows():
     lose_Team = (row['H_TEAM']) if (win_Team != row['H_TEAM']) else (row['A_TEAM'])
     marginOfVic = row['M_OF_VIC']
     
-    isWinTeamHome = helperObj.isHomeTeam(game_id, str(win_Team))
+    isWinTeamHome = True if win_Team == gameDataCSV.loc[gameDataCSV.GAME_ID == game_id, 'H_TEAM'].values[0] else False
     
     win_Adj, loser_Adj = 0, 0
     if isWinTeamHome:
