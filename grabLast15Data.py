@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
-import time
 import helperFunctions as hf
 import numpy as np
 
@@ -54,5 +53,6 @@ for index, row in game_stats.iterrows():
     for col in away_team_performance.columns:
         game_stats.loc[game_stats.GAME_ID == game_id, col] = away_team_performance.loc[0, col]
 
-
+    
+game_stats.fillna(0)
 game_stats.to_csv('AttemptDataSet.csv')
