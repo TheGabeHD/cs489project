@@ -10,7 +10,7 @@ helperObj = hf.HelperFunctions()
 
 def get_last_15(game_id, team):
     last_15 = game_stats[game_stats['GAME_ID'] < game_id][(game_stats['H_TEAM'] == team) |
-                                                           (game_stats['A_TEAM'] == team)].tail(15)
+                                                          (game_stats['A_TEAM'] == team)].tail(15)
 
     # Grab the stats relevant to home and away teams separately
     home_games = last_15.iloc[:, 9:15]
@@ -46,12 +46,13 @@ for index, row in game_stats.iterrows():
     home_team_performance.index = ['H_' + col for col in home_team_performance.index]
     home_team_performance = home_team_performance.transpose()
     for col in home_team_performance.columns:
-        game_stats.loc[game_stats.GAME_ID == game_id, col] = home_team_performance[col]
+        game_stats.loc[game_stats.GAME_ID == game_id, col] = home_team_performance.loc[0, col]
 
     away_team_performance = get_last_15(game_id, away_team)
     away_team_performance.index = ['A_' + col for col in away_team_performance.index]
     away_team_performance = away_team_performance.transpose()
     for col in away_team_performance.columns:
-        game_stats.loc[game_stats.GAME_ID == game_id, col] = away_team_performance[col]
+        game_stats.loc[game_stats.GAME_ID == game_id, col] = away_team_performance.loc[0, col]
+
 
 game_stats.to_csv('AttemptDataSet.csv')
