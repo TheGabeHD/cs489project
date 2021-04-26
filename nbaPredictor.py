@@ -58,7 +58,7 @@ svmRBF_table.field_names = ["Experiment #", "Accuracy"]
 # Preprocessing ------------------------------------------------------------------------------------------
 
 # Read in the Dataset
-gameDataCSV = pd.read_csv('FinalDataset.csv', index_col = 0)
+gameDataCSV = pd.read_csv('FinalDatasetComplete.csv', index_col = 0)
 
 # Grab the labels (Game Winner) 
 # Need to convert the winner data to numerical data:
@@ -123,6 +123,7 @@ for train_index, test_index in cv.split(gameDataCSV):
 
     # Add Results of Experiment to Table (rounded to 2 decimal places)
     svmPoly_table.add_row([experiment, helperObj.ReturnPercent(poly_accuracy)])
+    '''
 
     # -------------------------------------------------------------------------------
     # RBF Kernel Calculation
@@ -132,11 +133,11 @@ for train_index, test_index in cv.split(gameDataCSV):
 
     # Add Results of Experiment to Table (rounded to 2 decimal places)
     svmRBF_table.add_row([experiment, helperObj.ReturnPercent(rbf_accuracy)])
-    '''
-    
+
     # -------------------------------------------------------------------------------
     # Move to next experiment
     experiment = experiment + 1
+    print("Round: {}".format(experiment))
     
     
 # Print Out Results
@@ -157,5 +158,5 @@ print(svmPoly_table)
 print("Average Accuracy: {0:.0f}%".format((p_avg_accuracy / (experiment-1)) * 100))
 
 print("2) RBF Kernel:")
-print(svmPoly_table)
+print(svmRBF_table)
 print("Average Accuracy: {0:.0f}%".format((r_avg_accuracy / (experiment-1)) * 100))
