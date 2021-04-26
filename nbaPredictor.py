@@ -76,7 +76,7 @@ def makeNewPredict(home, away):
 # Initials -----------------------------------------------------------------------------------------------  
 
 # Check User Command line Input To See if Option to Predict New Game is selected
-newPrediction = False # Make this true if you just want predictions
+newPrediction = False # Make this true 
 if (len(sys.argv) > 1):
     if (sys.argv[1] == '-newpredict'): 
         newPrediction = True
@@ -111,7 +111,7 @@ for index, row in gameDataCSV.iterrows():
 
 # Drop non-Feature columns
 columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-gameDataCSV.drop(gameDataCSV.columns[columns], axis=1, inplace=True)
+gameDataCSV = gameDataCSV.drop(gameDataCSV.columns[columns], axis=1)
 
 # Perform Model Testing if we are not making a NEW prediction
 if not newPrediction:

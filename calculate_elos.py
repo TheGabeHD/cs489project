@@ -52,7 +52,7 @@ for team in list(all_NBA_teams):
     id = int(helperObj.getTeamId(team))
     eloArray += [float(teamBaseElos.loc[teamBaseElos['TEAM_ID'] == id, 'EOS_ELO'].values[0])]
 
-elo_dict = dict(zip(list(all_NBA_teams),  eloArray)) # Change 1500 to the 2013-14 Year Elo's
+elo_dict = dict(zip(list(all_NBA_teams),  [1500] * len(all_NBA_teams))) # Change 1500 to the 2013-14 Year Elo's
 
 currentYear = ""
 for index, row in gameDataCSV.iterrows():    
