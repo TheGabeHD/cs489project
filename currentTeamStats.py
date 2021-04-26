@@ -16,7 +16,7 @@ gameScore = pd.DataFrame(
              'LAST_15_BLK', 'TEAM_ELO'])
 
 for index, row in gameDataCSV_2.iterrows():
-    teams_list = gameScore['TEAM']
+    teams_list = gameScore['TEAM'].to_list()
     home_team = row['H_TEAM']
     away_team = row['A_TEAM']
 
