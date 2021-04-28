@@ -52,7 +52,7 @@ for team in list(all_NBA_teams):
     id = int(helperObj.getTeamId(team))
     eloArray += [float(teamBaseElos.loc[teamBaseElos['TEAM_ID'] == id, 'EOS_ELO'].values[0])]
 
-elo_dict = dict(zip(list(all_NBA_teams),  [1500] * len(all_NBA_teams))) # Change 1500 to the 2013-14 Year Elo's
+elo_dict = dict(zip(list(all_NBA_teams),  eloArray)) # Change 1500 to the 2013-14 Year Elo's
 
 currentYear = ""
 for index, row in gameDataCSV.iterrows():    
@@ -68,7 +68,7 @@ for index, row in gameDataCSV.iterrows():
     lose_Team = (row['H_TEAM']) if (win_Team != row['H_TEAM']) else (row['A_TEAM'])
     marginOfVic = row['M_OF_VIC']
     
-    isWinTeamHome = True if win_Team == gameDataCSV.loc[gameDataCSV.GAME_ID == game_id, 'H_TEAM'].values[0] else False
+    isWinTeamHome = helperObj.isHomeTeam(game_id, str(win_Team))
     
     win_Adj, loser_Adj = 0, 0
     if isWinTeamHome:

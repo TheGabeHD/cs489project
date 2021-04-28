@@ -70,7 +70,7 @@ class HelperFunctions:
         df = self._teamGames
         index = df.loc[df['GAME_ID'] == game_id].index[0]
         matchup = df['MATCHUP'].loc[index]
-        if '@' in matchup:
+        if '@' in matchup and df['TEAM_NAME'].loc[index] == teamName:
             return True
         else:
             return False
